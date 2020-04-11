@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+
+  gmailapi:
+    build: ./gmailapi
+    container_name: gmailapi
+    
+  meteo:
+    build: ./meteo
+    container_name: meteo
+    depends_on: 
+      - gmailapi
+
