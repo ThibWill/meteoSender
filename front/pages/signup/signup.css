@@ -1,0 +1,74 @@
+.main {
+  display: flex;
+  justify-content: center;
+  font-family: Pacifico;
+  height: calc(100% - 112px);
+}
+
+.about {
+  margin-right: 34px;
+  outline: none;
+}
+
+.field {
+  width: 280px;
+  height: 80px;
+  margin-bottom: 40px;
+}
+
+.login {
+  margin-top: 40px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 472px;
+  height: 568px;
+  border-radius: 10px;
+  border: white 16px solid;
+  background: #D1D9FF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fieldName {
+  font-size: 20px;
+  width: 280px;
+  height: 40px;
+}
+
+input {
+  width: 280px;
+  height: 40px;
+  border: none;
+  font-family: Pacifico;
+  font-size: 16px;
+  padding: 0px 8px 0px 8px;
+}
+
+button {
+  width: 200px;
+  height: 64px;
+  background: #99A6EF;
+  color: white;
+  border-radius: 4px;
+  margin-top: 16px;
+  font-family: Pacifico;
+  font-size: 32px;
+  border: 0px;
+  padding: 0px;
+}
+
+.signUpLink {
+  margin-top: 32px;
+  font-size: 20px;
+  text-decoration: underline;
+  outline: none;
+}
+
+.signUpLink:hover { color:steelblue; } 
+.signUpLink:link { color:black; }
+.signUpLink:visited { color:black; }
+.signUpLink:hover:visited { color:steelblue; } 
+.signUpLink:active { color:steelblue; }

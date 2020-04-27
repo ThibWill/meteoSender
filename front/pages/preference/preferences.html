@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head> 
+  <title>DailyMail</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="../../font/Pacifico/pacifico.css" rel="stylesheet">
+  <link href="../main.css" rel="stylesheet">
+  <link href="./preferences.css" rel="stylesheet">
+  <script src="preferences.js"></script>
+</head>
+<body class="body"> 
+  <header class="header">
+    <a href="../home/home.html" class="logoLink">DailyMail</a>
+    <div class="email">
+      thibault.willer@gmail.com
+    </div>
+  </header>
+  <main class="main">
+    <div class="preferencesPanel">
+      <h1>Composez votre mail</h1>
+      <div class="preferences"> 
+        <div class="preference">
+          <div class=preftext>Météo</div>
+          <select class="city-picker" name="city-picker" id="city-picker" autocomplete="on">
+            <option value="">Ville</option>
+            <option value="7">7h</option>
+            <option value="10">10h</option>
+            <option value="12">12hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</option>
+            <option value="14">14h</option>
+            <option value="18">18h</option>
+            <option value="22">22h</option>
+          </select>
+          <img class="preficon" onclick="change_icon(this)" name="prefMeteo" src="../../img/okpref.svg" alt="ok"/>
+        </div>
+        <div class="preference">
+          <div class=preftext>News</div>
+          <img class="preficon" onclick="change_icon(this)" name="prefMeteo" src="../../img/kopref.svg" alt="ko"/>
+        </div>
+        <div class="preference">
+          <div class=preftext>Citation</div>
+          <img class="preficon" onclick="change_icon(this)" name="prefMeteo" src="../../img/okpref.svg" alt="ok"/>
+        </div>
+      </div>
+    </div>
+    <div class="configPanel">
+      <div class="hourpref">
+        <div class=hourtext>
+          Quand souhaitez vous recevoir le mail?
+        </div>
+        <select class="hour-picker" name="hourpicker" id="hourpicker">
+          <option value=""> Heure</option>
+          <option value="7">7h</option>
+          <option value="10">10h</option>
+          <option value="12">12h</option>
+          <option value="14">14h</option>
+          <option value="18">18h</option>
+          <option value="22">22h</option>
+        </select>
+      </div>
+      <div class="unsubscribe">Se désinscrire et supprimmer mon compte</div>
+    </div>
+  </main>
+</body>
