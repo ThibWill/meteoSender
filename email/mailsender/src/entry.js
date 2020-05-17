@@ -14,10 +14,10 @@ const server = http.createServer(async (req, res) => {
       })
       await req.on('end', async () => {
         try {
-          console.log(body);
           body = JSON.parse(body);
-          if(body.email.content && body.email.subjectEmail) {
-            await sendEmail(body.email.content, body.email.subjectEmail);
+          const { recipient, content, subjectEmail } = body.email;
+          if(recipient && content && subjectEmail) {
+            await sendEmail(recipient, content, subjectEmail);
             await buildresponse(res, 200, "email sent");
           } else {
             //TODO LOGS

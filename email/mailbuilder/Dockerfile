@@ -1,10 +1,8 @@
 FROM node:13-slim
 
-WORKDIR /var/opt/gmailapi
+WORKDIR /var/opt/builder
 COPY . ./
 
 RUN npm install
-
-EXPOSE 80
 
 ENTRYPOINT npm start

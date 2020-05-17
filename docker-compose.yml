@@ -2,13 +2,25 @@ version: "3"
 
 services:
 
-  gmailapi:
-    build: ./gmailapi
-    container_name: gmailapi
+  mailsender:
+    build: ./mailsender
+    container_name: mailsender
     
   meteo:
-    build: ./meteo
+    build: .email/modules/meteo
     container_name: meteo
+
+  news:
+    build: .email/modules/news
+    container_name: news
+
+  mailbuilder:
+    build: ./mailsender
+    container_name: mailsender
     depends_on: 
-      - gmailapi
+      - meteo
+      - news
+      - mailsender
+    
+
 

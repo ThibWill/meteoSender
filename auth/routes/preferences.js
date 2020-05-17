@@ -4,92 +4,8 @@ const recipeRoutes = async (db, app) => {
 
   const router = new Router();
 
-  // Creation of a new recipe
-  router.post("/modifypreferences", async (req, res) => {
-    const { recipe_name, difficulty, price, duration, number_persons, description, steps, pseudo } = req.body;
-
-    if(!recipe_name || !difficulty || !price || !duration || !number_persons || !description || !steps || !pseudo) {
-      return res.status(400).send({err: "Missing parameters"});
-    }
-
-    if(typeof steps !== typeof [] || steps.length === 0) { return res.status(400).send({err: "Steps are missing"}); }
-    if(typeof (number_persons*1) !== typeof 0) { return res.status(400).send({err: "Wrong type on number of persons"}); }
-    if(typeof (duration*1) !== typeof 0) { return res.status(400).send({err: "Wrong type on duration"}); }
-
-    let user;
-    // Get id user
-    try {
-      const { rowCount, rows } = await db.query(
-        `SELECT * FROM public."User" WHERE pseudo = $1`, 
-        [pseudo]
-      )
-      if(rowCount !== 1) {
-        return res.status(404).send({err: "Error when trying to recongnize the user (user doesn't exist or multiple user found)"});
-      }
-      user = rows[0];
-    } catch(e) {
-      return res.status(500).send({err: "Error when trying to recongnize the user (database connexion)"});
-    }
-
-    // Check if a receipe with the same name exists or not for the user
-    try {
-      const {rowCount} = await db.query(
-        `SELECT id FROM Public."Recipe" WHERE created_by = $1 AND recipe_name = $2`, 
-        [user.id, recipe_name]
-      );
-      if(rowCount > 0) {
-        return res.status(403).send({err: "A recipe with the same name already exists for the user"});
-      }
-    } catch(e) {
-      console.log(e);
-      return res.status(500).send({err: "Error while checking old recipes"});
-    }
-
-    // Creation recipe
-    try {
-      await db.query(
-        `INSERT INTO Public."Recipe"(recipe_name, difficulty, price, duration, created_at, description, number_person, created_by) 
-        Values($1, $2, $3, $4, NOW(), $5, $6, $7)`, 
-        [recipe_name, difficulty, price, duration, description, number_persons, user.id]
-      );
-    } catch(e) {
-      console.log(e);
-      return res.status(500).send({err: "Error while creating the recipe"});
-    }
-
-    let id_recipe;
-    // Get id recipe
-    try {
-      const {rows} = await db.query(
-        `SELECT id FROM Public."Recipe" WHERE created_by = $1 ORDER BY id DESC LIMIT 1`, 
-        [user.id]
-      );
-      id_recipe = rows[0].id;
-    } catch(e) {
-      console.log(e);
-      return res.status(500).send({err: "Error while getting the new recipe"});
-    }
-
-    // Creation steps
-    for(let i = 0; i < steps.length; i++) {
-      if(steps[i].description !== undefined) {
-        try {
-          await db.query(
-            `INSERT INTO Public."RecipeStep"(step_number, description, id_recipe) Values($1, $2, $3)`, 
-            [i+1, steps[i].description, id_recipe]
-          );
-        } catch(e) {
-          console.log(e);
-          // TODO delete recipe
-          return res.status(500).send({err: "Error while creating steps of the recipe"});
-        }
-      }
-    }
-    return res.status(200).send({message: "Recipe created"});
-  });
-
-  router.post("/modifyRecipe", async (req, res) => {
-    const { preferenceName, newValue, email } = req.body;
+  router.post("/modifyPreference", async (req, res) => {
+    const { preferenceName, newValue, email, particularityName, particularityValue } = req.body;
 
     if(!preferenceName || !newValue || !email) { return res.status(400).send({err: "Missing parameters"}); }
     if(newValue*1 !== 0 && newValue*1 !== 1) { return res.status(400).send({err: "Wrong input value"}); }
@@ -109,7 +25,61 @@ const recipeRoutes = async (db, app) => {
       return res.status(500).send({err: "Error when trying to recongnize the user (database connexion)"});
     }
 
-    // Update recipe
+    // Get preference
+    try {
+      const { rowCount, rows } = await db.query(
+        `SELECT * FROM public."Service" WHERE name = $1`, 
+        [preferenceName]
+      );
+      if(rowCount === 0) {
+        return res.status(404).send({err: "Error when trying to find the preference"});
+      }
+      const service = rows[0];
+
+      await db.query(
+        `INSERT INTO public."Subscription"(id_user, id_service) VALUES ($1, $2, NOW())`, 
+        [user.id, service.id]
+      );
+
+      if(particularityName && particularityValue) {
+        const { rowCount, rows } = await db.query(
+          `SELECT * FROM public."Subscription" WHERE id_user = $1 && id_service = $2`, 
+          [user.id, service.id]
+        );
+        if(rowCount === 0) {
+          return res.status(404).send({err: "Error when trying to find the new subscription"});
+        }
+        const subscription = rows[0];
+
+        const { rowCount, rows } = await db.query(
+          `SELECT * FROM public."Particularity" WHERE id_service = $1 && name = $2`, 
+          [service.id, particularityName]
+        );
+        if(rowCount === 0) {
+          return res.status(404).send({err: "Error when trying to find the particularity"});
+        }
+        const particularity = rows[0];
+
+        await db.query(
+          `INSERT INTO public."Particularity_Sub"(id_particularity, id_subscription, value) VALUES ($1, $2, $3)`, 
+          [particularity.id, subscription.id, particularityValue]
+        );
+      }
+    } catch(e) {
+      return res.status(500).send({err: "Error when trying to enable a prefrence for the the user"});
+    }
+
+    // Create / delete subscription
+    if(newValue === 0) {
+      const { rowCount, rows } = await db.query(
+        `DELETE FROM public."Preference" WHERE name = $1`, 
+        [preferenceName]
+      )
+    }
+
+    // if creation create particularity of exists
+    // if deleation delete particularity
+
     try {
       await db.query(
         `UPDATE Public."Recipe" SET recipe_name = $1, difficulty = $2, price = $3, 

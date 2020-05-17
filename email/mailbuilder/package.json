@@ -1,0 +1,14 @@
+{
+  "name": "mailbuilder",
+  "version": "1.0.0",
+  "description": "Mail builder",
+  "main": "src/api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "thib",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2"
+  }
+}

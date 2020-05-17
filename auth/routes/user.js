@@ -24,7 +24,6 @@ const userRoutes = async (db, app) => {
     }
 
     try {
-
       // We check if the email already exists or not in the DB
       {
         const { rows } = await db.query(
