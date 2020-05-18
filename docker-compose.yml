@@ -3,24 +3,21 @@ version: "3"
 services:
 
   mailsender:
-    build: ./mailsender
+    build: ./email/mailsender
     container_name: mailsender
-    
+
   meteo:
-    build: .email/modules/meteo
+    build: ./email/modules/meteo
     container_name: meteo
 
   news:
-    build: .email/modules/news
+    build: ./email/modules/news
     container_name: news
 
   mailbuilder:
-    build: ./mailsender
-    container_name: mailsender
+    build: ./email/mailbuilder
+    container_name: mailbuilder
     depends_on: 
       - meteo
       - news
       - mailsender
-    
-
-

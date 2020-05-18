@@ -7,9 +7,9 @@ const port = 80;
 const server = http.createServer(async (req, res) => {
   const path = url.parse(req.url).pathname;
   if (path === "/meteo") {
-    const meteo = await buildMail();
-    if(meteo) {
-      await buildresponse(res, 200, {meteo});
+    const partEmail = await buildMail();
+    if(partEmail) {
+      await buildresponse(res, 200, {partEmail});
     } else {
       await buildresponse(res, 500, {err: "error api meteo"});
     }

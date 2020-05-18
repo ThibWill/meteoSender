@@ -7,9 +7,9 @@ const port = 80;
 const server = http.createServer(async (req, res) => {
   const path = url.parse(req.url).pathname;
   if (path === "/news") {
-    const news = await buildMail();
-    if(news) {
-      await buildresponse(res, 200, {news});
+    const partEmail = await buildMail();
+    if(partEmail) {
+      await buildresponse(res, 200, {partEmail});
     } else {
       await buildresponse(res, 500, {err: "error api news"});
     }

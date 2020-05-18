@@ -21,8 +21,8 @@ const server = http.createServer(async (req, res) => {
             await buildresponse(res, 200, "email sent");
           } else {
             //TODO LOGS
-            console.log("Bad request")
-            await buildresponse(res, 400, "bad request");
+            console.log("Bad parameters")
+            await buildresponse(res, 400, "bad parameters");
           }
         } catch(e) {
           // TODO LOGS

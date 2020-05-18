@@ -4,11 +4,11 @@ async function callModule(nameModule) {
   let partEmail = '';
   await axios.get(`http://${nameModule}/${nameModule}`)
   .then((response) => {
-    partEmail += response;
+    partEmail += response.data.partEmail;
   }).catch((err) => {
     console.error(err);
   });
-  return response
+  return partEmail;
 }
 
 async function sendEmail(email) {
